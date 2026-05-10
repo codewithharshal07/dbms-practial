@@ -1,0 +1,30 @@
+PRACTICAL 5 — Aggregate Functions & Grouping: Sales Analysis
+```sql
+-- Create Table
+CREATE TABLE Sales (
+sale_id INT PRIMARY KEY,
+product_id INT,
+amount DECIMAL(10,2),
+region VARCHAR(30)
+);
+-- Insert Records
+INSERT INTO Sales VALUES
+(1, 101, 3000, 'North'),
+(2, 102, 7000, 'South'),
+(3, 103, 4500, 'North'),
+(4, 104, 6000, 'East'),
+(5, 105, 2500, 'South'),
+(6, 106, 8000, 'East'),
+(7, 107, 1500, 'West'),
+(8, 108, 5500, 'North');
+-- 1. Total sales per region (SUM)
+SELECT region, SUM(amount) AS total_sales
+FROM Sales
+GROUP BY region;
+-- 2. Average sales (AVG)
+SELECT AVG(amount) AS average_sales FROM Sales;
+-- 3. Regions with total sales > 5000 (HAVING)
+SELECT region, SUM(amount) AS total_sales
+FROM Sales
+GROUP BY region
+HAVING SUM(amount) > 5000;
