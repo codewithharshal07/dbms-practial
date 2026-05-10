@@ -1,0 +1,61 @@
+PRACTICAL 13 — MongoDB Aggregation: Student Marks
+```javascript
+// ── Use / Create Database ──────────────────────────────────────
+use studentDB
+// ── 1. Insert Records ─────────────────────────────────────────
+db.marks.insertMany([
+{ name: "Amit", marks: 85, subject: "Maths" },
+{ name: "Priya", marks: 72, subject: "Maths" },
+{ name: "Ravi", marks: 90, subject: "Science" },
+{ name: "Sneha", marks: 65, subject: "Science" },
+{ name: "Neha", marks: 78, subject: "English" },
+{ name: "Raj", marks: 55, subject: "English" },
+{ name: "Kiran", marks: 80, subject: "Maths" },
+{ name: "Pooja", marks: 74, subject: "Science" }
+)
+]
+// ── 2a. Average marks per subject ─────────────────────────────
+db.marks.aggregate([
+{ $group: {
+_id: "$subject",
+avg_marks: { $avg: "$marks" }
+}}
+)
+]
+// ── 2b. Count of students per subject ─────────────────────────
+db.marks.aggregate([
+{ $group: {
+_id: "$subject",
+student_count: { $sum: 1 }
+}}
+)
+]
+// ── 2c. Max marks per subject ─────────────────────────────────
+db.marks.aggregate([
+{ $group: {
+_id: "$subject",
+max_marks: { $max: "$marks" }
+}}
+)
+]
+// ── 2d. Total marks per subject ───────────────────────────────
+db.marks.aggregate([
+{ $group: {
+_id: "$subject",
+total_marks: { $sum: "$marks" }
+}}
+)
+]
+// ── 3. Sort students by marks (Descending) ────────────────────
+db.marks.find().sort({ marks: -1 }).pretty()
+// ── Bonus: Combined pipeline — avg, count, max per subject ────
+db.marks.aggregate([
+{ $group: {
+_id: "$subject",
+avg_marks: { $avg: "$marks" },
+total_marks: { $sum: "$marks" },
+max_marks: { $max: "$marks" },
+student_count: { $sum: 1 }
+}},
+{ $sort: { avg_marks: -1 } }
+)
