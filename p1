@@ -1,0 +1,48 @@
+ ✅ PRACTICAL 1 — DDL Commands & Constraints: Student Course Management System
+```sql
+-- Create Tables
+CREATE TABLE Students (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50) NOT NULL,
+age INT CHECK (age >= 18),
+email VARCHAR(100) UNIQUE
+);
+CREATE TABLE Courses (
+course_id INT PRIMARY KEY,
+course_name VARCHAR(50) NOT NULL
+);
+CREATE TABLE Enrollments (
+enroll_id INT PRIMARY KEY,
+student_id INT NOT NULL,
+course_id INT NOT NULL,
+FOREIGN KEY (student_id) REFERENCES Students(student_id),
+FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+-- Insert Records
+INSERT INTO Students VALUES
+(1, 'Amit Shah', 20, 'amit@email.com'),
+(2, 'Priya Patil', 22, 'priya@email.com'),
+(3, 'Ravi Kumar', 19, 'ravi@email.com'),
+(4, 'Sneha Joshi', 21, 'sneha@email.com'),
+(5, 'Neha Gupta', 23, 'neha@email.com');
+INSERT INTO Courses VALUES
+(101, 'Computer Engineering'),
+(102, 'Information Technology'),
+(103, 'Electronics'),
+(104, 'Mechanical'),
+(105, 'Civil');
+INSERT INTO Enrollments VALUES
+(1, 1, 101),
+(2, 2, 102),
+(3, 3, 101),
+(4, 4, 103),
+(5, 5, 104);
+-- ALTER: Add email column (already added above; shown separately if needed)
+ALTER TABLE Students ADD COLUMN phone VARCHAR(15);
+-- Rename Table
+ALTER TABLE Enrollments RENAME TO StudentEnrollments;
+-- Drop unused table (example)
+CREATE TABLE TempTable (id INT);
+DROP TABLE TempTable;
+-- Truncate
+TRUNCATE TABLE StudentEnrollments;
