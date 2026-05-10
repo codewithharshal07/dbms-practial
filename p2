@@ -1,0 +1,47 @@
+PRACTICAL 2 — DDL Commands & Constraints: Online Shopping Database
+```sql
+-- Create Tables
+CREATE TABLE Customers (
+customer_id INT PRIMARY KEY,
+customer_name VARCHAR(50) NOT NULL,
+email VARCHAR(100) UNIQUE NOT NULL
+);
+CREATE TABLE Products (
+product_id INT PRIMARY KEY,
+product_name VARCHAR(50) NOT NULL,
+price DECIMAL(10,2) CHECK (price > 0)
+);
+CREATE TABLE Orders (
+order_id INT PRIMARY KEY,
+customer_id INT NOT NULL,
+product_id INT NOT NULL,
+quantity INT NOT NULL,
+FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+FOREIGN KEY (product_id) REFERENCES Products(product_id)
+);
+-- Insert Records
+INSERT INTO Customers VALUES
+(1, 'Amit Shah', 'amit@shop.com'),
+(2, 'Priya Patil', 'priya@shop.com'),
+(3, 'Ravi Kumar', 'ravi@shop.com'),
+(4, 'Sneha Joshi', 'sneha@shop.com'),
+(5, 'Neha Gupta', 'neha@shop.com');
+INSERT INTO Products VALUES
+(1, 'Laptop', 55000.00),
+(2, 'Mouse', 500.00),
+(3, 'Keyboard', 1200.00),
+(4, 'Monitor', 15000.00),
+(5, 'Headphones', 2500.00);
+INSERT INTO Orders VALUES
+(1, 1, 1, 1),
+(2, 2, 2, 2),
+(3, 3, 3, 1),
+(4, 4, 4, 1),
+(5, 5, 5, 3);
+-- ALTER: Add discount column
+ALTER TABLE Products ADD COLUMN discount DECIMAL(5,2) DEFAULT 0.00;
+-- Rename Table
+ALTER TABLE Orders RENAME TO CustomerOrders;
+-- Drop Table
+CREATE TABLE OldOrders (id INT);
+DROP TABLE OldOrders;
