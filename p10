@@ -1,0 +1,43 @@
+PRACTICAL 10 — Stored Procedure with Cursor: Employee Salary Update
+```sql
+-- Step 1: Create Table
+CREATE TABLE Employee (
+id INT PRIMARY KEY,
+name VARCHAR(50),
+salary DECIMAL(10,2)
+);
+-- Step 2: Insert Records
+INSERT INTO Employee VALUES
+(1, 'Amit Shah', 55000),
+(2, 'Priya Patil', 42000),
+(3, 'Ravi Kumar', 61000),
+(4, 'Sneha Joshi', 47000),
+(5, 'Neha Gupta', 58000);
+-- Step 3: Display BEFORE execution
+SELECT * FROM Employee;
+-- Step 4: Stored Procedure using Cursor (MySQL / PL/SQL syntax)
+DELIMITER $$
+CREATE PROCEDURE IncreaseSalary()
+BEGIN
+DECLARE done INT DEFAULT 0;
+DECLARE emp_id INT;
+DECLARE emp_name VARCHAR(50);
+DECLARE emp_sal DECIMAL(10,2);
+DECLARE emp_cursor CURSOR FOR
+SELECT id, name, salary FROM Employee;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+OPEN emp_cursor;
+read_loop: LOOP
+FETCH emp_cursor INTO emp_id, emp_name, emp_sal;
+IF done = 1 THEN
+LEAVE read_loop;
+END IF;
+UPDATE Employee SET salary = salary + 1000 WHERE id = emp_id;
+END LOOP;
+CLOSE emp_cursor;
+END$$
+DELIMITER ;
+-- Step 5: Call the procedure
+CALL IncreaseSalary();
+-- Step 6: Display AFTER execution
+SELECT * FROM Employee;
