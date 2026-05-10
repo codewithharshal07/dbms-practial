@@ -1,0 +1,32 @@
+PRACTICAL 12 — MongoDB CRUD: Student Records
+```javascript
+// ── Use / Create Database ──────────────────────────────────────
+use studentDB
+// ── 1. Insert ONE document ────────────────────────────────────
+db.students.insertOne({
+name: "Amit Shah",
+age: 21,
+course: "Computer Engineering"
+})
+// ── 2. Insert MULTIPLE documents ──────────────────────────────
+db.students.insertMany([
+{ name: "Priya Patil", age: 20, course: "Information Technology" },
+{ name: "Ravi Kumar", age: 23, course: "Computer Engineering" },
+{ name: "Sneha Joshi", age: 19, course: "Electronics" },
+{ name: "Neha Gupta", age: 22, course: "Mechanical" },
+{ name: "Raj Mehta", age: 18, course: "Civil" }
+)
+]
+// ── 3. Display ALL students ────────────────────────────────────
+db.students.find().pretty()
+// ── 4. Find students with age > 21 ────────────────────────────
+db.students.find({ age: { $gt: 21 } }).pretty()
+// ── 5. Update a student's age ──────────────────────────────────
+db.students.updateOne(
+{ name: "Sneha Joshi" },
+{ $set: { age: 22 } }
+)
+// ── 6. Delete students with age < 21 ──────────────────────────
+db.students.deleteMany({ age: { $lt: 21 } })
+// ── Verify final state ─────────────────────────────────────────
+db.students.find().pretty()
