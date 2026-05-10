@@ -1,0 +1,33 @@
+PRACTICAL 3 — DML Queries: Employee Database Operations
+```sql
+-- Create Table
+CREATE TABLE Employee (
+emp_id INT PRIMARY KEY,
+emp_name VARCHAR(50) NOT NULL,
+dept VARCHAR(30),
+salary DECIMAL(10,2),
+city VARCHAR(30)
+);
+-- INSERT
+INSERT INTO Employee VALUES
+(1, 'Amit Shah', 'IT', 55000, 'Pune'),
+(2, 'Priya Patil', 'HR', 42000, 'Mumbai'),
+(3, 'Ravi Kumar', 'IT', 61000, 'Pune'),
+(4, 'Sneha Joshi', 'Finance', 47000, 'Nagpur'),
+(5, 'Neha Gupta', 'IT', 58000, 'Pune'),
+(6, 'Raj Mehta', 'HR', 39000, 'Mumbai');
+-- UPDATE: Increase salary by 10%
+UPDATE Employee SET salary = salary * 1.10;
+-- DELETE: Remove employee with emp_id = 6
+DELETE FROM Employee WHERE emp_id = 6;
+-- Arithmetic Operation
+SELECT emp_name, salary, salary * 0.20 AS tax FROM Employee;
+-- Logical Operators (AND, OR)
+SELECT * FROM Employee WHERE dept = 'IT' AND salary > 55000;
+SELECT * FROM Employee WHERE city = 'Pune' OR city = 'Mumbai';
+-- Pattern Matching (LIKE)
+SELECT * FROM Employee WHERE emp_name LIKE 'A%';
+SELECT * FROM Employee WHERE city LIKE '%pur%';
+-- String Functions
+```
+SELECT UPPER(emp_name) AS Name_Upper, LENGTH(emp_name) AS Name_Length FROM Employee;
