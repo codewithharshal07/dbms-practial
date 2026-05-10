@@ -1,0 +1,45 @@
+PRACTICAL 9 — Subqueries: Students & Courses
+```sql
+-- Create Tables
+CREATE TABLE Courses (
+course_id INT PRIMARY KEY,
+course_name VARCHAR(50) NOT NULL
+);
+CREATE TABLE Students (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50) NOT NULL,
+course_id INT,
+marks INT,
+FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+-- Insert Records
+INSERT INTO Courses VALUES
+(1, 'Computer Engineering'),
+(2, 'Information Technology'),
+(3, 'Electronics'),
+(4, 'Mechanical');
+INSERT INTO Students VALUES
+(1, 'Amit', 1, 85),
+(2, 'Priya', 2, 72),
+(3, 'Ravi', 1, 90),
+(4, 'Sneha', 3, 65),
+(5, 'Neha', 1, 78),
+(6, 'Raj', 2, 88),
+(7, 'Kiran', 4, 70),
+(8, 'Pooja', 3, 60);
+-- 1. Students enrolled in "Computer Engineering"
+SELECT student_name, marks
+FROM Students
+WHERE course_id = (
+SELECT course_id FROM Courses WHERE course_name = 'Computer Engineering'
+);
+-- 2. Students who scored more than the average marks
+SELECT student_name, marks
+FROM Students
+WHERE marks > (SELECT AVG(marks) FROM Students);
+-- 3. Students enrolled in the same course as "Amit"
+SELECT student_name, marks
+FROM Students
+WHERE course_id = (
+SELECT course_id FROM Students WHERE student_name = 'Amit')
+AND student_name != 'Amit';
