@@ -1,0 +1,48 @@
+riggers: Bank Database System
+```sql
+-- Step 1: Create Table
+CREATE TABLE Bank (
+acc_id INT PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+balance DECIMAL(12,2)
+);
+-- Step 2: Insert Records
+INSERT INTO Bank VALUES
+(1, 'Amit Shah', 10000),
+(2, 'Priya Patil', 25000),
+(3, 'Ravi Kumar', 15000),
+(4, 'Sneha Joshi', 30000),
+(5, 'Neha Gupta', 20000);
+-- Step 3: Trigger — Set balance to 0 if NULL (BEFORE INSERT)
+DELIMITER $$
+CREATE TRIGGER set_default_balance
+BEFORE INSERT ON Bank
+FOR EACH ROW
+BEGIN
+IF NEW.balance IS NULL THEN
+SET NEW.balance = 0;
+END IF;
+END$$
+DELIMITER ;
+-- Test Trigger 1: Insert without balance
+INSERT INTO Bank (acc_id, name) VALUES (6, 'Test User');
+SELECT * FROM Bank WHERE acc_id = 6;
+-- Output: balance = 0 ✅
+-- Step 4: Trigger — Prevent negative balance (BEFORE UPDATE)
+DELIMITER $$
+CREATE TRIGGER prevent_negative_balance
+BEFORE UPDATE ON Bank
+FOR EACH ROW
+BEGIN
+IF NEW.balance < 0 THEN
+SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT = 'Error: Balance cannot be negative!';
+END IF;
+END$$
+DELIMITER ;
+-- Test Trigger 2: Try to make balance negative
+UPDATE Bank SET balance = balance - 50000 WHERE acc_id = 1;
+-- Output: Error: Balance cannot be negative! ✅
+-- Valid update (should succeed)
+UPDATE Bank SET balance = balance - 2000 WHERE acc_id = 1;
+SELECT * FROM Bank WHERE acc_id = 1;
